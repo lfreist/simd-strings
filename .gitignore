@@ -1,52 +1,47 @@
-# Prerequisites
-*.d
+# .gitignore
 
-# Object files
+# Ignore objects and libraries:
 *.o
-*.ko
-*.obj
-*.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
 *.lo
+*.la
+*.a
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+# Ignore generated files from 'configure' and 'make':
+/Makefile
+/Makefile.in
+/config.status
+/config.log
+/configure
+/config.h
+/config.h.in
+/stamp-h?
+/depcomp
+/install-sh
+/missing
+/compile
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+# Ignore directories created by 'configure' and 'make':
+/.deps/
+/.libs/
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+# Ignore files created by 'make distcheck':
+/dist/
+/PROJECT-VERSION/
+/PROJECT-VERSION.tar.gz
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# Ignore TAGS file created by etags or ctags:
+/TAGS
+
+# Ignore the autom4te.cache directory created by 'autoconf':
+/autom4te.cache/
+
+# Ignore files created by libtool:
+*.loT
+*.libs
+
+# Ignore the 'build' directory if it's a separate build directory:
+/build/
+
+# Ignore the 'm4' directory if it contains autoconf macros downloaded by aclocal:
+/m4/
+

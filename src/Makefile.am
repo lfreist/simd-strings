@@ -1,5 +1,8 @@
-lib_LIBRARIES = simdstr.a
-simdstr_a_SOURCES = $(wildcard *.c)
-simdstr_a_CFLAGS = -I$(top_srcdir)/include
+# project_name/src/Makefile.am
+lib_LIBRARIES = libsimdstr.a
+libsimdstr_a_SOURCES = ${src_files}
+libsimdstr_a_CFLAGS = -I$(top_srcdir)/include
 all-local:
-    cp .libs/* $(top_builddir)/build/
+	@mkdir -p $(top_builddir)/build
+	@mv libsimdstr.a $(top_builddir)/build/
+
