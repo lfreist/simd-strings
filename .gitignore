@@ -49,5 +49,5 @@ config.*
 ltmain.sh
 configure~
 /build-aux/
-/ar-lib/
-adlocal.m4
+ar-lib
+aclocal.m4
