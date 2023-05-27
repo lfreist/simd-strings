@@ -45,3 +45,9 @@
 # Ignore the 'm4' directory if it contains autoconf macros downloaded by aclocal:
 /m4/
 
+config.*
+ltmain.sh
+configure~
+/build-aux/
+/ar-lib/
+adlocal.m4
