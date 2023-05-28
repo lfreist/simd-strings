@@ -1,7 +1,7 @@
 // Copyright 2023, Leon Freist
 // Author: Leon Freist <freist.leon@gmail.com>
 
-#include "include/simdstr/search.h"
+#include <simdstr/search.h>
 
 #include <immintrin.h>
 #include <string.h>
@@ -24,7 +24,7 @@ simd_strchr (const char *str, size_t str_len, int c)
         {
                 // load next 32 bytes
                 const __m256i block =
-                        _mm256_loadu_si256 (reinterpret_cast<const __m256i *> (str));
+                        _mm256_loadu_si256 ((const __m256i *) (str));
 
                 const __m256i eq = _mm256_cmpeq_epi8 (_c, block);
 
