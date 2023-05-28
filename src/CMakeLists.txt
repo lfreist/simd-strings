@@ -1,0 +1,1 @@
+add_library(simdstr simdstr.c search.c)

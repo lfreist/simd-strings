@@ -3,4 +3,7 @@ project(simd_string C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_library(simdstr library.c)
+include_directories(include)
+
+add_subdirectory(src)
+add_subdirectory(test)
