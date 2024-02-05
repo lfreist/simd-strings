@@ -1,0 +1,5 @@
+add_subdirectory(timer)
+add_subdirectory(statistics)
+
+add_executable(search_benchmarks search_benchmarks.c)
+target_link_libraries(search_benchmarks PRIVATE timer statistics simdstr_search)
