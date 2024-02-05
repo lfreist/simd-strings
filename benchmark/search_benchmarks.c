@@ -5,7 +5,6 @@
  * This file is part of simd_string.
  */
 
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,14 +18,16 @@ struct Result_T {
         double mean;
         double stddev;
         double median;
-        long position;
+        double min;
+        double max;
+        long long position;
 };
 
 struct Result_T
 benchmark_strchr (const char *haystack, int c, int iterations)
 {
         double *times = malloc (iterations * sizeof (double));
-        long position = -1;
+        long long position = -1;
         for (int i = 0; i < iterations; ++i)
         {
                 double start = get_time ();
@@ -43,6 +44,8 @@ benchmark_strchr (const char *haystack, int c, int iterations)
         result.mean = mean (times, iterations);
         result.stddev = stddev (times, iterations, result.mean);
         result.median = median (times, iterations);
+        result.min = min_a (times, iterations);
+        result.max = max_a (times, iterations);
         result.position = position;
 
         free (times);
@@ -53,7 +56,7 @@ struct Result_T
 benchmark_simd_strchr (const char *haystack, size_t size, char c, int iterations)
 {
         double *times = malloc (iterations * sizeof (double));
-        long position = -1;
+        long long position = -1;
         for (int i = 0; i < iterations; ++i)
         {
                 double start = get_time ();
@@ -70,6 +73,8 @@ benchmark_simd_strchr (const char *haystack, size_t size, char c, int iterations
         result.mean = mean (times, iterations);
         result.stddev = stddev (times, iterations, result.mean);
         result.median = median (times, iterations);
+        result.min = min_a (times, iterations);
+        result.max = max_a (times, iterations);
         result.position = position;
 
         free (times);
@@ -80,7 +85,7 @@ struct Result_T
 benchmark_simd_strichr (const char *haystack, size_t size, char c, int iterations)
 {
         double *times = malloc (iterations * sizeof (double));
-        long position = -1;
+        long long position = -1;
         for (int i = 0; i < iterations; ++i)
         {
                 double start = get_time ();
@@ -97,6 +102,8 @@ benchmark_simd_strichr (const char *haystack, size_t size, char c, int iteration
         result.mean = mean (times, iterations);
         result.stddev = stddev (times, iterations, result.mean);
         result.median = median (times, iterations);
+        result.min = min_a (times, iterations);
+        result.max = max_a (times, iterations);
         result.position = position;
 
         free (times);
@@ -107,7 +114,7 @@ struct Result_T
 benchmark_strstr (const char *haystack, const char *needle, int iterations)
 {
         double *times = malloc (iterations * sizeof (double));
-        long position = -1;
+        long long position = -1;
         for (int i = 0; i < iterations; ++i)
         {
                 double start_time = get_time ();
@@ -124,6 +131,8 @@ benchmark_strstr (const char *haystack, const char *needle, int iterations)
         result.mean = mean (times, iterations);
         result.stddev = stddev (times, iterations, result.mean);
         result.median = median (times, iterations);
+        result.min = min_a (times, iterations);
+        result.max = max_a (times, iterations);
         result.position = position;
 
         free (times);
@@ -131,14 +140,14 @@ benchmark_strstr (const char *haystack, const char *needle, int iterations)
 }
 
 struct Result_T
-benchmark_simd_strstr (const char *haystack, size_t str_size, const char *needle, size_t needle_size, int iterations)
+benchmark_simd_strstr_64 (const char *haystack, size_t str_size, const char *needle, size_t needle_size, int iterations)
 {
         double *times = malloc (iterations * sizeof (double));
-        long position = -1;
+        long long position = -1;
         for (int i = 0; i < iterations; ++i)
         {
                 double start_time = get_time ();
-                const char *result = simd_strstr (haystack, str_size, needle, needle_size);
+                const char *result = simd_generic_search_64 (haystack, str_size, needle, needle_size, -1, -1);
                 double end_time = get_time ();
                 if (position < 0 && result != NULL)
                 {
@@ -151,6 +160,37 @@ benchmark_simd_strstr (const char *haystack, size_t str_size, const char *needle
         result.mean = mean (times, iterations);
         result.stddev = stddev (times, iterations, result.mean);
         result.median = median (times, iterations);
+        result.min = min_a (times, iterations);
+        result.max = max_a (times, iterations);
+        result.position = position;
+
+        free (times);
+        return result;
+}
+
+struct Result_T
+benchmark_simd_strstr_32 (const char *haystack, size_t str_size, const char *needle, size_t needle_size, int iterations)
+{
+        double *times = malloc (iterations * sizeof (double));
+        long long position = -1;
+        for (int i = 0; i < iterations; ++i)
+        {
+                double start_time = get_time ();
+                const char *result = simd_generic_search_32 (haystack, str_size, needle, needle_size, -1, -1);
+                double end_time = get_time ();
+                if (position < 0 && result != NULL)
+                {
+                        position = result - haystack;
+                }
+                times[i] = end_time - start_time;
+        }
+
+        struct Result_T result;
+        result.mean = mean (times, iterations);
+        result.stddev = stddev (times, iterations, result.mean);
+        result.median = median (times, iterations);
+        result.min = min_a (times, iterations);
+        result.max = max_a (times, iterations);
         result.position = position;
 
         free (times);
@@ -161,7 +201,7 @@ struct Result_T
 benchmark_simd_stristr (const char *haystack, size_t str_size, const char *needle, size_t needle_size, int iterations)
 {
         double *times = malloc (iterations * sizeof (double));
-        long position = -1;
+        long long position = -1;
         for (int i = 0; i < iterations; ++i)
         {
                 double start_time = get_time ();
@@ -178,6 +218,8 @@ benchmark_simd_stristr (const char *haystack, size_t str_size, const char *needl
         result.mean = mean (times, iterations);
         result.stddev = stddev (times, iterations, result.mean);
         result.median = median (times, iterations);
+        result.min = min_a (times, iterations);
+        result.max = max_a (times, iterations);
         result.position = position;
 
         free (times);
@@ -216,6 +258,16 @@ read_file (const char *path)
         return fileContent;
 }
 
+void
+print_result (const struct Result_T *result)
+{
+        printf (" Position: %lld\n\n", result->position);
+        printf (" result:   %f +/- %f ms\n", result->mean * 1000.0f, result->stddev * 1000.0f);
+        printf (" Min:      %f ms\n", result->min * 1000.0f);
+        printf (" Max:      %f ms\n", result->max * 1000.0f);
+        printf (" Median:   %f ms\n\n", result->median * 1000.0f);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -232,23 +284,21 @@ main (int argc, char **argv)
         int iterations = 5;
 
         printf ("Needle:  \"%s\"\n", needle);
-        printf ("Textsize: %lu\n", strlen (haystack));
-
-        printf ("\nBenchmarking simd_strstr...\n");
-        struct Result_T result_simd_strstr = benchmark_simd_strstr (haystack, strlen (haystack), needle, strlen (needle), iterations);
-        printf (" Position: %ld\n\n", result_simd_strstr.position);
-        printf (" Mean:     %f\n", result_simd_strstr.mean);
-        printf (" StdDev:   %f\n", result_simd_strstr.stddev);
-        printf (" Median:   %f\n\n", result_simd_strstr.median);
+        printf ("Textsize: %llu\n", strlen (haystack));
 
         printf ("Benchmarking strstr...\n");
         struct Result_T result_strstr = benchmark_strstr (haystack, needle, iterations);
-        printf (" Position: %ld\n\n", result_strstr.position);
-        printf (" Mean:     %f\n", result_strstr.mean);
-        printf (" StdDev:   %f\n", result_strstr.stddev);
-        printf (" Median:   %f\n", result_strstr.median);
+        print_result (&result_strstr);
 
-        free(haystack);
+        printf ("\nBenchmarking simd_strstr_32...\n");
+        struct Result_T result_simd_strstr_32 = benchmark_simd_strstr_32 (haystack, strlen (haystack), needle, strlen (needle), iterations);
+        print_result (&result_simd_strstr_32);
+
+        printf ("\nBenchmarking simd_strstr_64...\n");
+        struct Result_T result_simd_strstr_64 = benchmark_simd_strstr_64 (haystack, strlen (haystack), needle, strlen (needle), iterations);
+        print_result ((&result_simd_strstr_64));
+
+        free (haystack);
 
         return 0;
 }

@@ -12,7 +12,7 @@
 #include "statistics.h"
 
 double
-mean (double *data, int size)
+mean (const double *data, int size)
 {
         double sum = 0.0;
         for (int i = 0; i < size; ++i)
@@ -23,7 +23,7 @@ mean (double *data, int size)
 }
 
 double
-stddev (double *data, int size, double mean)
+stddev (const double *data, int size, double mean)
 {
         double sum = 0.0;
         for (int i = 0; i < size; ++i)
@@ -36,11 +36,11 @@ stddev (double *data, int size, double mean)
 int
 compare_doubles (const void *a, const void *b)
 {
-        return (*(double *) a - *(double *) b);
+        return (int)(*(double *) a - *(double *) b);
 }
 
 double
-median (double *data, int size)
+median (const double *data, int size)
 {
         double *sorted_data = malloc (size * sizeof (double));
         memcpy (sorted_data, data, size * sizeof (double));
@@ -60,4 +60,24 @@ median (double *data, int size)
 
         free (sorted_data);
         return median_value;
+}
+
+double min_a(const double* data, int size)
+{
+        double min = INFINITY;
+        for (int i = 0; i < size; ++i)
+        {
+                min = data[i] < min ? data[i] : min;
+        }
+        return min;
+}
+
+double max_a(const double* data, int size)
+{
+        double max = -INFINITY;
+        for (int i = 0; i < size; ++i)
+        {
+                max = data[i] > max ? data[i] : max;
+        }
+        return max;
 }

@@ -1,5 +1,5 @@
 #include "minunit.h"
-#include <simdstr/search/search.h>
+#include <simdstr/search.h>
 #include <stdio.h>
 
 static const char *data = "Liane reindorsing two-time zippering chromolithography rainbowweed "

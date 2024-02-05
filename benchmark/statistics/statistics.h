@@ -8,10 +8,14 @@
 #ifndef SIMD_STRING_STATISTICS_H
 #define SIMD_STRING_STATISTICS_H
 
-double mean (double *data, int size);
+double mean (const double *data, int size);
 
-double stddev (double *data, int size, double mean);
+double stddev (const double *data, int size, double mean);
 
-double median (double *data, int size);
+double median (const double *data, int size);
+
+double min_a(const double* data, int size);
+
+double max_a(const double* data, int size);
 
 #endif//SIMD_STRING_STATISTICS_H

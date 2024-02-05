@@ -1,5 +1,5 @@
 #include "minunit.h"
-#include <simdstr/search/search.h>
+#include <simdstr/search.h>
 #include <string.h>
 
 MU_TEST(test_empty_text) {

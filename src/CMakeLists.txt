@@ -1,5 +1,5 @@
-add_library(simdstr_search search.c)
-target_compile_options(simdstr_search PUBLIC "-mavx2")
+add_subdirectory(utils)
 
-add_library(simdstr STATIC simdstr.c)
-target_link_libraries(simdstr PRIVATE simdstr_search)
+add_library(simdstr_search search.c)
+target_link_libraries(simdstr_search PUBLIC utils)
+target_compile_options(simdstr_search PUBLIC "-mavx2")
