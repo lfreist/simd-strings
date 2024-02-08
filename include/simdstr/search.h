@@ -10,8 +10,10 @@
 const char *
 simd_generic_search_32 (const char *str, size_t str_len, const char *substr, size_t substr_len, int fst_index, int snd_index);
 
+/*
 const char *
 simd_generic_search_64 (const char *str, size_t str_len, const char *substr, size_t substr_len, int fst_index, int snd_index);
+*/
 
 const char *
 simd_strchr (const char *str, size_t str_len, int c);

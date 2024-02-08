@@ -23,7 +23,7 @@
  * Perform strchr with two different chars fst and snd. If fst == snd, strchr
  *  is performed.
  */
-inline const char *
+const char *
 strchrchr (const char *str, size_t str_len, int fst, int snd)
 {
         if (fst == snd)
@@ -39,7 +39,7 @@ strchrchr (const char *str, size_t str_len, int fst, int snd)
         return NULL;
 }
 
-inline const char *
+const char *
 rest_strstr (const char *str, size_t str_len, const char *substr, size_t substr_len)
 {
         for (/**/; str_len > 0; --str_len)
@@ -63,7 +63,7 @@ rest_strstr (const char *str, size_t str_len, const char *substr, size_t substr_
         return NULL;
 }
 
-inline const char *
+const char *
 rest_stristr (const char *str, size_t str_len, const char *substr, size_t substr_len)
 {
         for (/**/; str_len > 0; --str_len)
@@ -87,7 +87,7 @@ rest_stristr (const char *str, size_t str_len, const char *substr, size_t substr
         return NULL;
 }
 
-inline int
+int
 icase_memcmp (const char *str1, const char *str2, size_t size)
 {
         for (size_t i = 0; i < size; ++i)
@@ -128,7 +128,7 @@ icase_memcmp (const char *str1, const char *str2, size_t size)
  *      - snd = ['e', 'e', ..., 'e']
  *      - fst_dst_distance = 4 - 2 = 2
  */
-inline uint32_t
+uint32_t
 h_simd_generic_search_32_block_cmp (const char *str, const __m256i fst, const __m256i snd, int fst_snd_distance)
 {
         const __m256i block_first = _mm256_loadu_si256 ((const __m256i *) str);
@@ -157,6 +157,7 @@ h_simd_generic_search_32_block_cmp (const char *str, const __m256i fst, const __
  *      - snd = ['e', 'e', ..., 'e']
  *      - fst_dst_distance = 4 - 2 = 2
  */
+ /*
 inline uint64_t
 h_simd_generic_search_64_block_cmp (const char *str, const __m512i fst, const __m512i snd, int fst_snd_distance)
 {
@@ -167,13 +168,14 @@ h_simd_generic_search_64_block_cmp (const char *str, const __m512i fst, const __
         const __mmask64 eq_last = _mm512_cmpeq_epi8_mask (snd, block_last);
         return _kand_mask64 (eq_first, eq_last);
 }
+*/
 
 /**
  * REMARK: For fst_index > 0, it must be assured that no access to memory < str happens:
  *  assuming mask has no trailing zero, it may happen, that str[-<fst_index>] is accessed.
  *  make sure that the provided *str can handle this!
  */
-inline const char *
+const char *
 h_simd_generic_search_32_mask_cmp (const char *str, const char *substr, size_t substr_len, uint32_t mask, int fst_index)
 {
         while (mask != 0)
@@ -193,7 +195,8 @@ h_simd_generic_search_32_mask_cmp (const char *str, const char *substr, size_t s
  *  assuming mask has no trailing zero, it may happen, that str[-<fst_index>] is accessed.
  *  make sure that the provided *str can handle this!
  */
-inline const char *
+ /*
+const char *
 h_simd_generic_search_64_mask_cmp (const char *str, const char *substr, size_t substr_len, uint64_t mask, int fst_index)
 {
         while (mask != 0)
@@ -207,6 +210,7 @@ h_simd_generic_search_64_mask_cmp (const char *str, const char *substr, size_t s
         }
         return NULL;
 }
+*/
 
 const char *
 simd_generic_search_32 (const char *str, size_t str_len, const char *substr, size_t substr_len, int fst_index, int snd_index)
@@ -267,6 +271,7 @@ simd_generic_search_32 (const char *str, size_t str_len, const char *substr, siz
         return strstr (str, substr);
 }
 
+/*
 const char *
 simd_generic_search_64 (const char *str, size_t str_len, const char *substr, size_t substr_len, int fst_index, int snd_index)
 {
@@ -287,7 +292,6 @@ simd_generic_search_64 (const char *str, size_t str_len, const char *substr, siz
                 return simd_strchr (str, str_len, *substr);
         }
 
-        /*
         // ensure proper memory alignment
         if (((uintptr_t) str & 0x3full) != 0)
         {
@@ -302,7 +306,6 @@ simd_generic_search_64 (const char *str, size_t str_len, const char *substr, siz
                         str += unaligned_size;
                 }
         }
-         */
 
         int fst_snd_distance = snd_index - fst_index;
 
@@ -327,6 +330,7 @@ simd_generic_search_64 (const char *str, size_t str_len, const char *substr, siz
         }
         return strstr (str, substr);
 }
+*/
 
 // ____________________________________________________________________________
 
@@ -411,12 +415,12 @@ simd_strichr (const char *str, size_t str_len, int c)
 const char *
 simd_strstr (const char *str, size_t str_len, const char *substr, size_t substr_len)
 {
-        if (avx512()) {
-                simd_generic_search_64 (str, str_len, substr, substr_len, -1, -1);
-        } else if (avx2()) {
-                simd_generic_search_32 (str, str_len, substr, substr_len, -1, -1);
-        }
-        return NULL;
+        // if (avx512()) {
+        //         simd_generic_search_64 (str, str_len, substr, substr_len, -1, -1);
+        // } else if (avx2()) {
+         return simd_generic_search_32 (str, str_len, substr, substr_len, -1, -1);
+        // }
+        // return NULL;
 }
 
 const char *

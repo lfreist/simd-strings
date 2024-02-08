@@ -7,22 +7,30 @@
 
 #include <simdstr/utils/utils.h>
 
+#ifdef _MSC_VER
 #include <intrin.h>
+#endif
 
 bool
 avx512 ()
 {
+#ifdef _MSC_VER
         int cpu_info[4];
         __cpuid(cpu_info, 7);
 
         return (cpu_info[1] & (1 << 16)) != 0;
+#endif
+        return false;
 }
 
 bool
 avx2 ()
 {
+#ifdef _MSC_VER
         int cpu_info[4];
         __cpuid(cpu_info, 1);
 
         return (cpu_info[2] & (1 << 5)) != 0;
+#endif
+        return true;
 }

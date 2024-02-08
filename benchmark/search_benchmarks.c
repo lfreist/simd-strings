@@ -139,6 +139,7 @@ benchmark_strstr (const char *haystack, const char *needle, int iterations)
         return result;
 }
 
+/*
 struct Result_T
 benchmark_simd_strstr_64 (const char *haystack, size_t str_size, const char *needle, size_t needle_size, int iterations)
 {
@@ -167,6 +168,7 @@ benchmark_simd_strstr_64 (const char *haystack, size_t str_size, const char *nee
         free (times);
         return result;
 }
+ */
 
 struct Result_T
 benchmark_simd_strstr_32 (const char *haystack, size_t str_size, const char *needle, size_t needle_size, int iterations)
@@ -204,9 +206,9 @@ benchmark_simd_stristr (const char *haystack, size_t str_size, const char *needl
         long long position = -1;
         for (int i = 0; i < iterations; ++i)
         {
-                double start_time = get_time ();
+                const double start_time = get_time ();
                 const char *result = simd_stristr (haystack, str_size, needle, needle_size);
-                double end_time = get_time ();
+                const double end_time = get_time ();
                 if (position < 0 && result != NULL)
                 {
                         position = result - haystack;
@@ -281,22 +283,24 @@ main (int argc, char **argv)
 
         char *haystack = read_file (file_path);
 
-        int iterations = 5;
+        const int iterations = 5;
 
         printf ("Needle:  \"%s\"\n", needle);
-        printf ("Textsize: %llu\n", strlen (haystack));
+        printf ("Textsize: %lu\n", strlen (haystack));
 
         printf ("Benchmarking strstr...\n");
-        struct Result_T result_strstr = benchmark_strstr (haystack, needle, iterations);
+        const struct Result_T result_strstr = benchmark_strstr (haystack, needle, iterations);
         print_result (&result_strstr);
 
         printf ("\nBenchmarking simd_strstr_32...\n");
-        struct Result_T result_simd_strstr_32 = benchmark_simd_strstr_32 (haystack, strlen (haystack), needle, strlen (needle), iterations);
+        const struct Result_T result_simd_strstr_32 = benchmark_simd_strstr_32 (haystack, strlen (haystack), needle, strlen (needle), iterations);
         print_result (&result_simd_strstr_32);
 
+        /*
         printf ("\nBenchmarking simd_strstr_64...\n");
         struct Result_T result_simd_strstr_64 = benchmark_simd_strstr_64 (haystack, strlen (haystack), needle, strlen (needle), iterations);
         print_result ((&result_simd_strstr_64));
+        */
 
         free (haystack);
 

@@ -1,1 +1,1 @@
-add_library(utils utils.c)
+add_library(utils SHARED utils.c)

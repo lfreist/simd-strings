@@ -18,7 +18,7 @@ py_simd_strstr(PyObject *self, PyObject *args)
                 return NULL;
         }
 
-        const char* result = simd_generic_search_32 (haystack, haystack_size, needle, needle_size, -1, -1);
+        const char* result = simd_strstr(haystack, haystack_size, needle, needle_size);
 
         Py_ssize_t match_position = (result == NULL) ? -1 : (result - haystack);
 
@@ -38,7 +38,7 @@ static struct PyModuleDef simdstr_module = {
         module_methods
 };
 
-PyMODINIT_FUNC PyInit_simdstr(void)
+PyMODINIT_FUNC PyInit_py_simdstr(void)
 {
         return PyModule_Create (&simdstr_module);
 }
