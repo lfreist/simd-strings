@@ -21,3 +21,6 @@ install(DIRECTORY include/
         DESTINATION include
         FILES_MATCHING PATTERN "*.h"
 )
+
+add_executable(teddy teddy.c)
+target_compile_options(teddy PUBLIC "-mavx2")

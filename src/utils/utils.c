@@ -18,6 +18,7 @@ avx512 ()
         int cpu_info[4];
         __cpuid(cpu_info, 7);
 
+        return false;
         return (cpu_info[1] & (1 << 16)) != 0;
 #endif
         return false;
@@ -30,6 +31,7 @@ avx2 ()
         int cpu_info[4];
         __cpuid(cpu_info, 1);
 
+        return true;
         return (cpu_info[2] & (1 << 5)) != 0;
 #endif
         return true;

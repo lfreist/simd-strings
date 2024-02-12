@@ -19,7 +19,7 @@ bool avx512 ();
 
 bool avx2 ();
 
-int
+inline int
 ctz_32 (uint32_t value)
 {
 #ifdef _MSC_VER
@@ -39,7 +39,7 @@ ctz_32 (uint32_t value)
 #endif
 }
 
-int
+inline int
 ctz_64 (uint64_t value)
 {
 #ifdef _MSC_VER

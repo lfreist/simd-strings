@@ -148,7 +148,7 @@ benchmark_simd_strstr_64 (const char *haystack, size_t str_size, const char *nee
         for (int i = 0; i < iterations; ++i)
         {
                 double start_time = get_time ();
-                const char *result = simd_generic_search_64 (haystack, str_size, needle, needle_size, -1, -1);
+                const char *result = simd_generic_search_avx_64 (haystack, str_size, needle, needle_size, -1, -1);
                 double end_time = get_time ();
                 if (position < 0 && result != NULL)
                 {
@@ -178,7 +178,7 @@ benchmark_simd_strstr_32 (const char *haystack, size_t str_size, const char *nee
         for (int i = 0; i < iterations; ++i)
         {
                 double start_time = get_time ();
-                const char *result = simd_generic_search_32 (haystack, str_size, needle, needle_size, -1, -1);
+                const char *result = simd_generic_search_avx_32 (haystack, str_size, needle, needle_size, -1, -1);
                 double end_time = get_time ();
                 if (position < 0 && result != NULL)
                 {

@@ -35546,7 +35546,7 @@ py_simd_strstr(PyObject *self, PyObject *args)
         printf("haystack: %lli\n", haystack_size);
         printf("needle:   %lld\n", needle_size);
 
-        const char* result = simd_generic_search_32 (haystack, haystack_size, needle, needle_size, -1, -1);
+        const char* result = simd_generic_search_avx_32 (haystack, haystack_size, needle, needle_size, -1, -1);
 
         printf ("%s\n", result);
 
