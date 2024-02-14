@@ -12,14 +12,23 @@
 #include <stdint.h>
 
 #ifdef _MSC_VER
+#include <intrin.h>
 #include <windows.h>
 #endif
 
-bool avx512 ();
+extern inline bool
+avx512 ()
+{
+        return false;
+}
 
-bool avx2 ();
+extern inline bool
+avx2 ()
+{
+        return true;
+}
 
-inline int
+extern inline int
 ctz_32 (uint32_t value)
 {
 #ifdef _MSC_VER
@@ -39,7 +48,7 @@ ctz_32 (uint32_t value)
 #endif
 }
 
-inline int
+extern inline int
 ctz_64 (uint64_t value)
 {
 #ifdef _MSC_VER
@@ -59,4 +68,4 @@ ctz_64 (uint64_t value)
 #endif
 }
 
-#endif  //SIMD_STRING_UTILS_H
+#endif//SIMD_STRING_UTILS_H
