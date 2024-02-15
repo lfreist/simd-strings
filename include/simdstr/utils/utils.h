@@ -28,43 +28,23 @@ avx2 ()
         return true;
 }
 
-extern inline int
+extern inline uint32_t
 ctz_32 (uint32_t value)
 {
 #ifdef _MSC_VER
-        DWORD trailing_zeroes = 0;
-
-        if (_BitScanForward (&trailing_zeroes, value))
-        {
-                return (int) trailing_zeroes;
-        }
-        else
-        {
-                // This is undefined, I better choose 32 than 0
-                return 32;
-        }
+        return _tzcnt_u32(value);
 #else
-        return __builtin_ctz (value);
+        return (uint32_t)__builtin_ctz (value);
 #endif
 }
 
-extern inline int
+extern inline uint64_t
 ctz_64 (uint64_t value)
 {
 #ifdef _MSC_VER
-        DWORD trailing_zeroes = 0;
-
-        if (_BitScanForward (&trailing_zeroes, value))
-        {
-                return (int) trailing_zeroes;
-        }
-        else
-        {
-                // This is undefined, I better choose 32 than 0
-                return 32;
-        }
+        return _tzcnt_u64(value);
 #else
-        return __builtin_ctzll (value);
+        return (uint64_t)__builtin_ctzll (value);
 #endif
 }
 

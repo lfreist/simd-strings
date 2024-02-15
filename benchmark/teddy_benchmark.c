@@ -11,18 +11,18 @@
 #include "statistics/statistics.h"
 #include "timer/timer.h"
 
-#include <simdstr/teddy.h>
+#include <simdstr/fat_teddy.h>
 
 int main() {
-        char haystack[] __attribute__((aligned(16))) = "text with only one pattern foo! anyways... this is how it works, so it is okay.";
+        __declspec(align(16)) char haystack[] = "sdfj kjdfg k foo! anyways... this is how it works, so it is okay.";
         char* patterns[] = {"foo", "bar", "bat"};
 
         struct FatTeddy teddy;
         fat_teddy_init(&teddy, patterns, 3);
 
-        struct Match match = teddy_find(&teddy, haystack, strlen (haystack));
+        struct Match match = fat_teddy_find(&teddy, haystack, strlen (haystack));
         if (match.pattern_id >= 0) {
-                printf ("Match found at position %li for patter %s\n", match.begin - &haystack[0], teddy.patterns[match.pattern_id]);
+                printf ("Match found at position %li for pattern %s\n", (long)(match.begin - &haystack[0]), teddy.patterns[match.pattern_id]);
         } else {
                 printf("No pattern found.\n");
         }
