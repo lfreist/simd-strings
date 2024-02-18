@@ -58,13 +58,13 @@ void SlimTeddy_init (SlimTeddy* self, Pattern* patterns, uint8_t num_patterns);
 
 Match SlimTeddy_find (SlimTeddy* self, char* str, size_t str_size);
 
-Match SlimTeddy_find_one (SlimTeddy* self, char* str, size_t str_size);
+Match SlimTeddy_find_one (SlimTeddy* self, char* cur, size_t cur_size);
 
-Match SlimTeddy_verify (SlimTeddy* self, __m128i* candidate, char* str, size_t str_size);
+Match SlimTeddy_verify (SlimTeddy* self, __m128i* candidate, char* cur, size_t cur_size);
 
-Match SlimTeddy_verify64 (SlimTeddy* self, uint64_t lane, char* str, size_t str_size);
+Match SlimTeddy_verify64 (SlimTeddy* self, uint64_t lane, char* cur, size_t cur_size);
 
-__m128i lookup_1 (__m128i* chunk, SlimPatternMask mask);
+__m128i lookup_1 (__m128i* chunk, SlimPatternMask* mask);
 
 // ___ SlimTeddy ______________________________________________________________________________________________________
 

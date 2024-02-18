@@ -10,4 +10,4 @@ target_compile_options(fat_teddy PUBLIC "-mavx2")
 
 add_library(slim_teddy slim_teddy.c)
 target_link_libraries(slim_teddy PUBLIC utils)
-target_compile_options(slim_teddy PUBLIC "-msse2")
+target_compile_options(slim_teddy PUBLIC "-msse4")

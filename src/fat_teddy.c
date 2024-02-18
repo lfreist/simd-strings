@@ -213,7 +213,7 @@ fat_teddy_find (struct FatTeddy *teddy, char *str, const size_t str_size)
         }
         if (size > 0)
         {
-                return fat_teddy_find_next (teddy, str + str_size - 33, 32);
+                return fat_teddy_find_next (teddy, str + str_size - 16, 16);
         }
         return match_empty ();
 }

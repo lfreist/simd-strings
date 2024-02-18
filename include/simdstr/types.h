@@ -21,4 +21,14 @@ typedef struct {
         char* start;
         char* end;
 } Match;
+
+extern inline Match Match_empty()
+{
+        Match match;
+        match.pattern_id = -1;
+        match.start = NULL;
+        match.end = NULL;
+        return match;
+}
+
 #endif//SIMD_STRING_TYPES_H
