@@ -11,14 +11,14 @@
 #include <stdint.h>
 
 typedef struct {
-        char* start;
+        char* begin;
         uint64_t size;
 } Pattern;
 
 typedef struct {
-        uint16_t pattern_id;
+        int16_t pattern_id;
 
-        char* start;
+        char* begin;
         char* end;
 } Match;
 
@@ -26,7 +26,7 @@ extern inline Match Match_empty()
 {
         Match match;
         match.pattern_id = -1;
-        match.start = NULL;
+        match.begin = NULL;
         match.end = NULL;
         return match;
 }

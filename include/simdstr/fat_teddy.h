@@ -1,9 +1,9 @@
 /**
- * Copyright 2024, Leon Freist (https://github.com/lfreist)
- * Author: Leon Freist <freist.leon@gmail.com>
- * 
- * This file is part of simd_string.
- */
+* Copyright 2024, Leon Freist (https://github.com/lfreist)
+* Author: Leon Freist <freist.leon@gmail.com>
+*
+* This file is part of simd_string.
+*/
 
 #ifndef SIMD_STRING_FAT_TEDDY_H
 #define SIMD_STRING_FAT_TEDDY_H
@@ -14,53 +14,46 @@
 #include <assert.h>
 
 #include <simdstr/utils/utils.h>
+#include <simdstr/types.h>
 
-struct Bucket {
-        uint8_t pattern_ids[16];
-        uint8_t size;
-};
+typedef struct {
+       uint8_t pattern_ids[16];
+       uint8_t size;
+} FatBucket;
 
-struct PatternMask {
-        uint8_t lo[32];
-        uint8_t hi[32];
+typedef struct {
+       uint8_t lo[32];
+       uint8_t hi[32];
 
-        __m256i v_lo;
-        __m256i v_hi;
-};
+       __m256i v_lo;
+       __m256i v_hi;
+} FatPatternMask;
 
-void pattern_mask_init(struct PatternMask* pattern_mask, struct Bucket* buckets, char** patterns);
+void pattern_mask_init(FatPatternMask* pattern_mask, FatBucket* buckets, char** patterns);
 
-void pattern_mask_add_fat(struct PatternMask* mask, char byte, uint8_t bucket_id);
+void pattern_mask_add_fat(FatPatternMask* mask, char byte, uint8_t bucket_id);
 
-void pattern_mask_finish(struct PatternMask* mask);
+void pattern_mask_finish(FatPatternMask* mask);
 
-struct FatTeddy {
-        struct PatternMask pattern_mask;
+typedef struct {
+       FatPatternMask pattern_mask;
 
-        char** patterns;
-        uint8_t num_patterns;
+       char** patterns;
+       uint8_t num_patterns;
 
-        struct Bucket buckets[16];
-};
+       FatBucket buckets[16];
+} FatTeddy;
 
-void fat_teddy_init(struct FatTeddy* teddy, char** patterns, uint8_t num_patterns);
+void fat_teddy_init(FatTeddy* teddy, char** patterns, uint8_t num_patterns);
 
-struct Match fat_teddy_find(struct FatTeddy* teddy, char* str, size_t str_size);
+Match fat_teddy_find(FatTeddy* teddy, char* str, size_t str_size);
 
-struct Match fat_teddy_find_next(struct FatTeddy* teddy, char* str, size_t str_size);
+Match fat_teddy_find_next(FatTeddy* teddy, char* str, size_t str_size);
 
-struct Match fat_teddy_verify(struct FatTeddy* teddy, __m256i* candidate, char* str, size_t str_size);
+Match fat_teddy_verify(FatTeddy* teddy, __m256i* candidate, char* str, size_t str_size);
 
-struct Match fat_teddy_verify64(struct FatTeddy* teddy, uint64_t lane, char* str, size_t str_size);
+Match fat_teddy_verify64(FatTeddy* teddy, uint64_t lane, char* str, size_t str_size);
 
-__m256i lookup_1(__m256i* chunk, struct PatternMask* pattern_mask);
-
-struct Match {
-        int pattern_id;
-        char* begin;
-        char* end;
-};
-
-struct Match match_empty();
+__m256i mm256_lookup_1(__m256i* chunk, FatPatternMask* pattern_mask);
 
 #endif//SIMD_STRING_FAT_TEDDY_H

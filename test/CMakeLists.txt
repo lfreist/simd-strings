@@ -1,8 +1,2 @@
-add_executable(test searchTest.c)
-target_link_libraries(test PRIVATE simdstr_search)
-
-add_executable(simd_strstrTest simd_strstrTest.c)
-target_link_libraries(simd_strstrTest PRIVATE simdstr_search)
-
-add_executable(simd_stristrTest simd_stristrTest.c)
-target_link_libraries(simd_stristrTest PRIVATE simdstr_search)
+add_executable(slim_teddy_test slim_teddy_test.c)
+target_link_libraries(slim_teddy_test PRIVATE slim_teddy)

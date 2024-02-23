@@ -28,6 +28,7 @@ typedef struct {
  * SLimPatternMask
  */
 typedef struct {
+        uint8_t id;
         uint8_t lo[32];
         uint8_t hi[32];
 
@@ -47,24 +48,39 @@ void SlimPatternMask_build (SlimPatternMask* self);
  * SlimTeddy
  */
 typedef struct {
-        SlimPatternMask pattern_mask;
+        SlimPatternMask pattern_mask[4];
         SlimBucket buckets[8];
 
         Pattern* patterns;
         uint8_t num_patterns;
+        uint8_t num_masks;
 } SlimTeddy;
 
-void SlimTeddy_init (SlimTeddy* self, Pattern* patterns, uint8_t num_patterns);
+void SlimTeddy_init (SlimTeddy* self, Pattern* patterns, uint8_t num_patterns, uint8_t num_masks);
 
 Match SlimTeddy_find (SlimTeddy* self, char* str, size_t str_size);
 
-Match SlimTeddy_find_one (SlimTeddy* self, char* cur, size_t cur_size);
+Match SlimTeddy_find_1(SlimTeddy* self, char* str, size_t str_size);
+Match SlimTeddy_find_2(SlimTeddy* self, char* str, size_t str_size);
+Match SlimTeddy_find_3(SlimTeddy* self, char* str, size_t str_size);
+Match SlimTeddy_find_4(SlimTeddy* self, char* str, size_t str_size);
+
+Match SlimTeddy_find_one_1 (SlimTeddy* self, char* cur, size_t cur_size);
+Match SlimTeddy_find_one_2 (SlimTeddy* self, char* cur, size_t cur_size, __m128i* prev0);
+Match SlimTeddy_find_one_3 (SlimTeddy* self, char* cur, size_t cur_size, __m128i* prev0, __m128i* prev1);
+Match SlimTeddy_find_one_4 (SlimTeddy* self, char* cur, size_t cur_size, __m128i* prev0, __m128i* prev1, __m128i* prev2);
 
 Match SlimTeddy_verify (SlimTeddy* self, __m128i* candidate, char* cur, size_t cur_size);
 
 Match SlimTeddy_verify64 (SlimTeddy* self, uint64_t lane, char* cur, size_t cur_size);
 
-__m128i lookup_1 (__m128i* chunk, SlimPatternMask* mask);
+void mm_lookup_1 (__m128i* chunk, SlimPatternMask* mask, __m128i* res0);
+
+void mm_lookup_2 (__m128i* chunk, SlimPatternMask* mask, __m128i* res0, __m128i* res1);
+
+void mm_lookup_3 (__m128i* chunk, SlimPatternMask* mask, __m128i* res0, __m128i* res1, __m128i* res2);
+
+void mm_lookup_4 (__m128i* chunk, SlimPatternMask* mask, __m128i* res0, __m128i* res1, __m128i* res2, __m128i* res3);
 
 // ___ SlimTeddy ______________________________________________________________________________________________________
 

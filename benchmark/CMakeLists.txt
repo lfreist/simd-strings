@@ -5,4 +5,4 @@ add_executable(search_benchmarks search_benchmarks.c)
 target_link_libraries(search_benchmarks PRIVATE timer statistics simdstr_search utils)
 
 add_executable(teddy_benchmark teddy_benchmark.c)
-target_link_libraries(teddy_benchmark PRIVATE fat_teddy)
+target_link_libraries(teddy_benchmark PRIVATE fat_teddy slim_teddy)

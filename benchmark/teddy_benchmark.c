@@ -12,20 +12,56 @@
 #include "timer/timer.h"
 
 #include <simdstr/fat_teddy.h>
+#include <simdstr/slim_teddy.h>
 
-int main() {
-        __declspec(align(16)) char haystack[] = "sdfj kjdfg k foo! anyways... this is how it works, so it is okay.";
+void Benchmark_FatTeddy() {
+        __declspec(align(16)) char haystack[] = "sdfj kjdf foo! anyways... this is how it works, so it is okay.";
         char* patterns[] = {"foo", "bar", "bat"};
 
-        struct FatTeddy teddy;
-        fat_teddy_init(&teddy, patterns, 3);
+        Pattern pats[3];
+        for (uint8_t i = 0; i < 3; ++i)
+        {
+                pats[i].begin = patterns[i];
+                pats[i].size = strlen(patterns[i]);
+        }
 
-        struct Match match = fat_teddy_find(&teddy, haystack, strlen (haystack));
+        FatTeddy teddy;
+        FatTeddy_init(&teddy, pats, 3);
+
+        Match match = FatTeddy_find(&teddy, haystack, strlen (haystack));
         if (match.pattern_id >= 0) {
-                printf ("Match found at position %li for pattern %s\n", (long)(match.begin - &haystack[0]), teddy.patterns[match.pattern_id]);
+                printf ("Match found at position %li for pattern %i\n", (long)(match.begin - &haystack[0]), match.pattern_id);
         } else {
                 printf("No pattern found.\n");
         }
+}
+
+void Benchmark_SlimTeddy() {
+        __declspec(align(16)) char haystack[] = "sdfj kjdf foo! anyways... this is how it works, so it is okay.";
+        char* patterns[] = {"foo", "bar", "bat"};
+
+        Pattern pats[3];
+        for (uint8_t i = 0; i < 3; ++i)
+        {
+                pats[i].begin = patterns[i];
+                pats[i].size = strlen(patterns[i]);
+        }
+
+        SlimTeddy teddy;
+        SlimTeddy_init(&teddy, pats, 3, 1);
+
+        Match match = SlimTeddy_find(&teddy, haystack, strlen (haystack));
+        if (match.pattern_id >= 0) {
+                printf ("Match found at position %li for pattern %i\n", (long)(match.begin - &haystack[0]), match.pattern_id);
+        } else {
+                printf("No pattern found.\n");
+        }
+}
+
+
+int main() {
+        Benchmark_FatTeddy();
+        Benchmark_SlimTeddy();
 
         return 0;
 }
